@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
 
 const SignUp = () => {
@@ -9,6 +9,8 @@ const SignUp = () => {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { signup } = useAuth()
+  const history = useHistory()
+
   const handleSignUp = async (e) => {
     e.preventDefault()
     if (password.trim() !== confirmPassowrd.trim()) {
@@ -19,6 +21,7 @@ const SignUp = () => {
       setError('')
       setIsLoading(true)
       await signup(email, password)
+      history.push('/')
     } catch (ex) {
       setError(`${ex.message} 😢😢`)
     }
