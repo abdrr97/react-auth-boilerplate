@@ -1,49 +1,55 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
-const Login = () => {
-  const [email, setEmail] = useState('abdrr97@gmail.com')
-  const [password, setPassword] = useState('password')
+
+const UpdateProfile = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassowrd, setConfirmPassowrd] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuth()
   const history = useHistory()
 
-  const handleSignUp = async (e) => {
+  const { currentUser } = useAuth()
+
+  const handleUpdateProfile = async (e) => {
     e.preventDefault()
+    if (password.trim() !== confirmPassowrd.trim()) {
+      setPassword('')
+      setConfirmPassowrd('')
+      return setError('Passwords do not match 😭😭')
+    }
     try {
       setError('')
       setIsLoading(true)
-      await login(email, password)
-
-      history.push('/')
+      //   await signup(email, password)
+      //   history.push('/')
     } catch (ex) {
       setError(`${ex.message} 😢😢`)
     }
     setIsLoading(false)
   }
-
   return (
     <>
       <div className='w-100' style={{ maxWidth: '400px' }}>
         <div className='card'>
           <div className='card-body'>
-            <h2 className='text-center mb-4'>Log In</h2>
+            <h2 className='text-center mb-4'>Update Profile</h2>
 
-            <form action='' onSubmit={handleSignUp}>
+            <form action='' onSubmit={handleUpdateProfile}>
               {error && <div className='alert alert-danger'>{error}</div>}
 
               <div className='form-group'>
                 <label htmlFor='email'>Email</label>
                 <input
-                  value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
                   id='email'
                   name='email'
                   type='email'
-                  placeholder='Enter your email here'
+                  placeholder='email goes here '
                   className='form-control'
+                  value={currentUser.email}
                 />
               </div>
               <div className='form-group'>
@@ -51,11 +57,24 @@ const Login = () => {
                 <input
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  required
                   id='password'
                   name='password'
                   type='password'
-                  placeholder='Enter your password here'
+                  placeholder='Leave it empty to keep the same'
+                  className='form-control'
+                />
+              </div>
+              <div className='form-group'>
+                <label htmlFor='password-confirmation'>
+                  Password Confirmation
+                </label>
+                <input
+                  value={confirmPassowrd}
+                  onChange={(event) => setConfirmPassowrd(event.target.value)}
+                  id='password-confirmation'
+                  name='password-confirmation'
+                  type='password'
+                  placeholder='Leave it empty to keep the same'
                   className='form-control'
                 />
               </div>
@@ -63,29 +82,27 @@ const Login = () => {
               <button
                 disabled={isLoading}
                 type='submit'
-                className='w-100 btn btn-primary mt-3'
+                className='w-100 btn btn-primary mt-5'
               >
-                {!isLoading && 'Login'}
-                {isLoading && (
+                {isLoading ? (
                   <div className='d-flex justify-content-center'>
                     <div className='spinner-border' role='status'>
                       <span className='sr-only'>Loading...</span>
                     </div>
                   </div>
+                ) : (
+                  'Update Profile'
                 )}
               </button>
             </form>
-            <div className='w-100 text-center mt-2'>
-              <Link to='/forgot-password'>Forgot Password</Link>
-            </div>
           </div>
         </div>
         <div className='w-100 text-center mt-2'>
-          Don't have an account ? <Link to='/sign-up'>Sign Up</Link>
+          <Link to='/'>Cancel</Link>
         </div>
       </div>
     </>
   )
 }
 
-export default Login
+export default UpdateProfile

@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
-const Login = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('abdrr97@gmail.com')
-  const [password, setPassword] = useState('password')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuth()
+  const { resetPassword } = useAuth()
   const history = useHistory()
 
-  const handleSignUp = async (e) => {
+  const handleForgotPassword = async (e) => {
     e.preventDefault()
     try {
+      setMessage('')
       setError('')
       setIsLoading(true)
-      await login(email, password)
 
-      history.push('/')
+      await resetPassword(email)
+      setMessage('Check your email for further instructions 😊😊')
     } catch (ex) {
       setError(`${ex.message} 😢😢`)
     }
@@ -30,9 +31,8 @@ const Login = () => {
           <div className='card-body'>
             <h2 className='text-center mb-4'>Log In</h2>
 
-            <form action='' onSubmit={handleSignUp}>
+            <form action='' onSubmit={handleForgotPassword}>
               {error && <div className='alert alert-danger'>{error}</div>}
-
               <div className='form-group'>
                 <label htmlFor='email'>Email</label>
                 <input
@@ -46,26 +46,13 @@ const Login = () => {
                   className='form-control'
                 />
               </div>
-              <div className='form-group'>
-                <label htmlFor='password'>Password</label>
-                <input
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  id='password'
-                  name='password'
-                  type='password'
-                  placeholder='Enter your password here'
-                  className='form-control'
-                />
-              </div>
 
               <button
                 disabled={isLoading}
                 type='submit'
                 className='w-100 btn btn-primary mt-3'
               >
-                {!isLoading && 'Login'}
+                {!isLoading && 'Reset Password'}
                 {isLoading && (
                   <div className='d-flex justify-content-center'>
                     <div className='spinner-border' role='status'>
@@ -75,17 +62,14 @@ const Login = () => {
                 )}
               </button>
             </form>
-            <div className='w-100 text-center mt-2'>
-              <Link to='/forgot-password'>Forgot Password</Link>
-            </div>
           </div>
         </div>
         <div className='w-100 text-center mt-2'>
-          Don't have an account ? <Link to='/sign-up'>Sign Up</Link>
+          <Link to='/sign-up'>Sign Up</Link> / <Link to='/log-in'>Log In</Link>
         </div>
       </div>
     </>
   )
 }
 
-export default Login
+export default ForgotPassword
