@@ -10,24 +10,37 @@ const UpdateProfile = () => {
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
 
-  const { currentUser } = useAuth()
+  const { currentUser, updateEmail, updatePassword } = useAuth()
 
-  const handleUpdateProfile = async (e) => {
+  const handleUpdateProfile = (e) => {
     e.preventDefault()
     if (password.trim() !== confirmPassowrd.trim()) {
       setPassword('')
       setConfirmPassowrd('')
       return setError('Passwords do not match 😭😭')
     }
-    try {
-      setError('')
-      setIsLoading(true)
-      //   await signup(email, password)
-      //   history.push('/')
-    } catch (ex) {
-      setError(`${ex.message} 😢😢`)
+    setIsLoading(true)
+    setError('')
+    const promises = []
+
+    if (email !== currentUser.email) {
+      promises.push(updateEmail(email))
     }
-    setIsLoading(false)
+
+    if (password) {
+      promises.push(updatePassword(password))
+    }
+
+    Promise.all(promises)
+      .then(() => {
+        history.push('/')
+      })
+      .catch(() => {
+        setError('Failed to update profile')
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
   return (
     <>
@@ -49,7 +62,8 @@ const UpdateProfile = () => {
                   type='email'
                   placeholder='email goes here '
                   className='form-control'
-                  value={currentUser.email}
+                  defaultValue={currentUser.email}
+                  value={!email ? currentUser.email : email}
                 />
               </div>
               <div className='form-group'>
