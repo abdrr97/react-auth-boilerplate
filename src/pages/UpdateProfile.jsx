@@ -3,22 +3,24 @@ import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
 
 const UpdateProfile = () => {
-  const [email, setEmail] = useState('')
+  const { currentUser, updateEmail, updatePassword } = useAuth()
+
+  const [email, setEmail] = useState(currentUser.email)
   const [password, setPassword] = useState('')
   const [confirmPassowrd, setConfirmPassowrd] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
 
-  const { currentUser, updateEmail, updatePassword } = useAuth()
-
   const handleUpdateProfile = (e) => {
     e.preventDefault()
+
     if (password.trim() !== confirmPassowrd.trim()) {
       setPassword('')
       setConfirmPassowrd('')
       return setError('Passwords do not match 😭😭')
     }
+
     setIsLoading(true)
     setError('')
     const promises = []
@@ -63,7 +65,7 @@ const UpdateProfile = () => {
                   placeholder='email goes here '
                   className='form-control'
                   defaultValue={currentUser.email}
-                  value={!email ? currentUser.email : email}
+                  value={email}
                 />
               </div>
               <div className='form-group'>

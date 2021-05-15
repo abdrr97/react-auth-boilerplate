@@ -12,25 +12,21 @@ const UpdateProfile = lazy(() => import('./pages/UpdateProfile'))
 
 const App = () => {
   return (
-    <div
-      className='container d-flex align-items-center justify-content-center'
-      style={{ minHeight: '100vh' }}
-    >
-      <AuthProvider>
-        <Router>
-          <Suspense fallback={<p>Loading...</p>}>
-            <Switch>
-              <PrivateRoute exact path='/' component={Dashboard} />
-              <Route path='/sign-up' component={Signup} />
-              <Route path='/log-in' component={Login} />
-              <Route path='/update-profile' component={UpdateProfile} />
-              <Route path='/forgot-password' component={ForgotPassword} />
-              <Route path='*' component={NotFound} />
-            </Switch>
-          </Suspense>
-        </Router>
-      </AuthProvider>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Suspense fallback={<p>Loading...</p>}>
+          <Switch>
+            <PrivateRoute exact path='/' component={Dashboard} />
+
+            <Route path='/sign-up' component={Signup} />
+            <Route path='/log-in' component={Login} />
+            <Route path='/update-profile' component={UpdateProfile} />
+            <Route path='/forgot-password' component={ForgotPassword} />
+            <Route path='*' component={NotFound} />
+          </Switch>
+        </Suspense>
+      </Router>
+    </AuthProvider>
   )
 }
 

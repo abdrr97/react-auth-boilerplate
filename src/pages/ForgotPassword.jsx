@@ -7,7 +7,6 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { resetPassword } = useAuth()
-  const history = useHistory()
 
   const handleForgotPassword = async (e) => {
     e.preventDefault()
