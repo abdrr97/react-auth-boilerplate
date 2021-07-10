@@ -81,9 +81,7 @@ const UpdateProfile = () => {
                 />
               </div>
               <div className='form-group'>
-                <label htmlFor='password-confirmation'>
-                  Password Confirmation
-                </label>
+                <label htmlFor='password-confirmation'>Password Confirmation</label>
                 <input
                   value={confirmPassowrd}
                   onChange={(event) => setConfirmPassowrd(event.target.value)}
@@ -95,11 +93,7 @@ const UpdateProfile = () => {
                 />
               </div>
 
-              <button
-                disabled={isLoading}
-                type='submit'
-                className='w-100 btn btn-primary mt-5'
-              >
+              <button disabled={isLoading} type='submit' className='w-100 btn btn-primary mt-5'>
                 {isLoading ? (
                   <div className='d-flex justify-content-center'>
                     <div className='spinner-border' role='status'>
